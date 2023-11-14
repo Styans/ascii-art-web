@@ -32,9 +32,17 @@ func main() {
 		fmt.Print(asciiArt.IncorectInput, asciiArt.ExpectedArgs)
 		return
 	}
-	
+
 	err = art.DrawAscii()
 	if err != nil {
 		fmt.Print(asciiArt.IncorectInput, err)
+	}
+	if art.Option == asciiArt.Output {
+		err = art.Output()
+		if err != nil {
+			fmt.Println(err)
+		}
+	} else {
+		fmt.Print(art.Result)
 	}
 }

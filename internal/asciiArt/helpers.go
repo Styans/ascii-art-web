@@ -17,7 +17,7 @@ type ArtObjects struct {
 	Fs        []string
 	Args      []string
 	WidthTerm int
-	result    [][]string
+	Result    string
 }
 
 const (

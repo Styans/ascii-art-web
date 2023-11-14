@@ -2,7 +2,6 @@ package asciiArt
 
 import (
 	"errors"
-	"fmt"
 	"strings"
 )
 
@@ -45,15 +44,15 @@ func (art *ArtObjects) DrawAscii() error {
 		}
 	}
 
-	var res string
 	for _, line := range lineText {
 		for i := 0; i < 9; i++ {
 			for _, letters := range line {
-				res += mapColour[letters] + art.Fs[mapAscii[letters]+i] + Colors["Reset"]
+				art.Result += mapColour[letters] + art.Fs[mapAscii[letters]+i] + Colors["Reset"]
 			}
-			res += "\n"
+
+			art.Result += "\n"
 		}
 	}
-	fmt.Print(res)
+
 	return nil
 }
