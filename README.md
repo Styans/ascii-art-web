@@ -1,2 +1,1 @@
-# ascii-art-web
-my project for alem scool
+ascii art web
