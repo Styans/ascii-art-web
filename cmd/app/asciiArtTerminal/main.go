@@ -45,4 +45,5 @@ func main() {
 	} else {
 		fmt.Print(art.Result)
 	}
+
 }
