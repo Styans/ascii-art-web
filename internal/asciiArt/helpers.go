@@ -2,10 +2,11 @@ package asciiArt
 
 import (
 	"errors"
+	"fmt"
 	"os"
-	"os/exec"
-	"strconv"
 	"strings"
+
+	"golang.org/x/term"
 )
 
 type ArtObjects struct {
@@ -28,7 +29,7 @@ const (
 )
 
 func (art *ArtObjects) GetDatas() error {
-	// defer art.GetTerminalVids()
+	defer art.GetTerminalVids()
 
 	var err error
 
@@ -109,13 +110,18 @@ func (art *ArtObjects) GetFs(cut bool, fs string) error {
 	if cut {
 		art.Args = art.Args[:len(art.Args)-1]
 	}
+
 	return nil
 }
 
 func (art *ArtObjects) GetTerminalVids() {
-	cmd := exec.Command("stty", "size")
-	cmd.Stdin = os.Stdin
-	output, _ := cmd.Output()
-	width, _ := strconv.Atoi(strings.Fields(string(output))[1])
+	fd := int(os.Stdout.Fd())
+
+	// Получаем размеры терминала
+	width, _, err := term.GetSize(fd)
+	if err != nil {
+		fmt.Println("Не удалось получить размеры терминала:", err)
+		return
+	}
 	art.WidthTerm = width
 }
