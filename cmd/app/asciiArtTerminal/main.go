@@ -21,7 +21,6 @@ func main() {
 		return
 	}
 	if !draw {
-
 	}
 
 	err = art.GetDatas()
@@ -33,7 +32,12 @@ func main() {
 		fmt.Print(asciiArt.IncorectInput, asciiArt.ExpectedArgs)
 		return
 	}
-	err = art.DrawAscii()
+	switch art.Option {
+	case asciiArt.Align:
+		err = art.AlignAscii()
+	default:
+		err = art.DrawAscii()
+	}
 	if err != nil {
 
 		fmt.Print(asciiArt.IncorectInput, err)
@@ -42,12 +46,11 @@ func main() {
 	if art.Option == asciiArt.Output {
 		err = art.Output()
 		if err != nil {
-			
+
 			fmt.Println(err)
 			return
 		}
 	} else {
 		fmt.Print(art.Result)
 	}
-
 }
