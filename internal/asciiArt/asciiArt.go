@@ -54,10 +54,12 @@ func (art *ArtObjects) AlignAscii() error {
 	var words1 string
 	letters1 := ""
 	for j, word := range lines {
+		tmp := 0
 		for _, lenWord := range word {
 			lenSpace += len(lenWord)
 		}
 		for i := 1; i < 9; i++ {
+
 			for ix, word := range textarr[j] {
 				if ix == 0 {
 					switch art.OptionArg {
@@ -65,22 +67,41 @@ func (art *ArtObjects) AlignAscii() error {
 						for s := 0; s < (art.WidthTerm-lenSpace)/2; s++ {
 							letters1 += " "
 						}
+						if i == 1 {
+							tmp += (art.WidthTerm - lenSpace) / 2
+							fmt.Println(tmp)
+						}
 					}
 				}
 				for _, letter := range word {
 					letters1 += art.Fs[mapAscii[letter]+i]
+					if i == 1 {
+						tmp += len(string(art.Fs[mapAscii[letter]+i]))
+						fmt.Println(tmp)
+					}
 				}
 				if ix != len(textarr[j])-1 {
 					switch art.OptionArg {
 					case "left", "right", "center":
 						letters1 += art.Fs[mapAscii[' ']+i]
+						if i == 1 {
+							tmp += len(art.Fs[mapAscii[' ']+i])
+							fmt.Println(tmp)
+						}
+
 					case "justify":
 						for s := 0; s < (art.WidthTerm-lenSpace)/(len(textarr[j])-1); s++ {
 							letters1 += " "
 						}
 					}
 				}
+
+				if tmp >= art.WidthTerm {
+					return errors.New("as")
+				}
+
 			}
+
 			words1 += letters1 + "\n"
 			letters1 = ""
 		}
