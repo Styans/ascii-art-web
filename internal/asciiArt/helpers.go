@@ -31,6 +31,18 @@ const (
 	Thinkertoy = "thinkertoy"
 )
 
+var Colors = map[string]string{
+	"Red":    "\033[31m",
+	"Green":  "\033[32m",
+	"Yellow": "\033[33m",
+	"Blue":   "\033[34m",
+	"Purple": "\033[35m",
+	"Cyan":   "\033[36m",
+	"White":  "\033[37m",
+	"Reset":  "\033[0m",
+	"Orange": "\033[38;5;208m",
+}
+
 func (art *ArtObjects) GetDatas() error {
 	defer art.GetTerminalVids()
 
