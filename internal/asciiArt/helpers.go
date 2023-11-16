@@ -16,6 +16,7 @@ type ArtObjects struct {
 	OptionArg string
 	ColorFill []rune
 	Fs        []string
+	AllFs     []string
 	Args      []string
 	WidthTerm int
 	Result    string
