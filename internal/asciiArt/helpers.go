@@ -32,7 +32,7 @@ func (art *ArtObjects) GetDatas() error {
 	defer art.GetTerminalVids()
 
 	var err error
-
+	fmt.Println(art.Args)
 	switch art.Args[len(art.Args)-1] {
 	case "standard":
 		err = art.GetFs(true, "standard")
@@ -41,7 +41,7 @@ func (art *ArtObjects) GetDatas() error {
 	case "thinkertoy":
 		err = art.GetFs(true, "thinkertoy")
 	default:
-		if len(art.Args) != 2 {
+		if len(art.Args) < 2 {
 			err = art.GetFs(false, "standard")
 		} else {
 			return errors.New(ExpectedStyle)
@@ -68,6 +68,7 @@ func (art *ArtObjects) GetOption() (error, bool) {
 		}
 		art.OptionArg = strings.TrimPrefix(art.Args[0], Align)
 		art.Option = Align
+		art.Args = art.Args[1:]
 	case strings.HasPrefix(art.Args[0], Сolour):
 		if len(art.Args) > 4 || len(art.Args) < 2 {
 			return errors.New(ExpectedArgs), false
@@ -78,6 +79,8 @@ func (art *ArtObjects) GetOption() (error, bool) {
 		switch len(art.Args) {
 		case 4:
 			art.Args = art.Args[2:]
+		case 3:
+			art.Args = art.Args[1:]
 		}
 
 	case strings.HasPrefix(art.Args[0], Reverse):
@@ -93,6 +96,11 @@ func (art *ArtObjects) GetOption() (error, bool) {
 		}
 		art.OptionArg = strings.TrimPrefix(art.Args[0], Output)
 		art.Option = Output
+		art.Args = art.Args[1:]
+	default:
+		if len(art.Args) > 2 {
+			return errors.New(ExpectedArgs), false
+		}
 	}
 	return nil, true
 }

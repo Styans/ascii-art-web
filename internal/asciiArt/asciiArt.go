@@ -43,18 +43,29 @@ func (art *ArtObjects) DrawAscii() error {
 			mapColour[letters] = Colors[strings.Title(art.OptionArg)]
 		}
 	}
-
-	for _, line := range lineText {
-		for i := 0; i < 9; i++ {
-			for _, letters := range line {
-				if art.Option == Сolour {
+	// line := ""
+	// var lineRes [][]string
+	// var ress [][][]string
+	switch art.Option {
+	case Сolour:
+		for _, line := range lineText {
+			for i := 0; i < 9; i++ {
+				for _, letters := range line {
 					art.Result += mapColour[letters] + art.Fs[mapAscii[letters]+i] + Colors["Reset"]
-				} else {
+				}
+				art.Result += "\n"
+
+			}
+		}
+	default:
+		for _, line := range lineText {
+			for i := 0; i < 9; i++ {
+				for _, letters := range line {
 					art.Result += art.Fs[mapAscii[letters]+i]
 				}
-			}
+				art.Result += "\n"
 
-			art.Result += "\n"
+			}
 		}
 	}
 

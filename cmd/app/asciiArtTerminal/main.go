@@ -23,6 +23,7 @@ func main() {
 	if !draw {
 
 	}
+
 	err = art.GetDatas()
 	switch {
 	case err != nil:
@@ -32,7 +33,7 @@ func main() {
 		fmt.Print(asciiArt.IncorectInput, asciiArt.ExpectedArgs)
 		return
 	}
-
+	
 	err = art.DrawAscii()
 	if err != nil {
 		fmt.Print(asciiArt.IncorectInput, err)
