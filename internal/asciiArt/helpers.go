@@ -22,27 +22,30 @@ type ArtObjects struct {
 }
 
 const (
-	Сolour  = "--colour="
-	Output  = "--output="
-	Reverse = "--reverse"
-	Align   = "--align="
+	Сolour     = "--colour="
+	Output     = "--output="
+	Reverse    = "--reverse"
+	Align      = "--align="
+	Standard   = "standard"
+	Shadow     = "shadow"
+	Thinkertoy = "thinkertoy"
 )
 
 func (art *ArtObjects) GetDatas() error {
 	defer art.GetTerminalVids()
 
 	var err error
-	fmt.Println(art.Args)
+
 	switch art.Args[len(art.Args)-1] {
-	case "standard":
-		err = art.GetFs(true, "standard")
-	case "shadow":
-		err = art.GetFs(true, "shadow")
-	case "thinkertoy":
-		err = art.GetFs(true, "thinkertoy")
+	case Standard:
+		err = art.GetFs(true, Standard)
+	case Shadow:
+		err = art.GetFs(true, Shadow)
+	case Thinkertoy:
+		err = art.GetFs(true, Thinkertoy)
 	default:
 		if len(art.Args) < 2 {
-			err = art.GetFs(false, "standard")
+			err = art.GetFs(false, Standard)
 		} else {
 			return errors.New(ExpectedStyle)
 		}
@@ -80,7 +83,16 @@ func (art *ArtObjects) GetOption() (error, bool) {
 		case 4:
 			art.Args = art.Args[2:]
 		case 3:
+			switch art.Args[len(art.Args)-1] {
+			case Thinkertoy, Standard, Shadow:
+				art.Args = art.Args[1:]
+			default:
+				art.Args = art.Args[2:]
+
+			}
+		default:
 			art.Args = art.Args[1:]
+
 		}
 
 	case strings.HasPrefix(art.Args[0], Reverse):

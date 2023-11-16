@@ -33,15 +33,18 @@ func main() {
 		fmt.Print(asciiArt.IncorectInput, asciiArt.ExpectedArgs)
 		return
 	}
-	
 	err = art.DrawAscii()
 	if err != nil {
+
 		fmt.Print(asciiArt.IncorectInput, err)
+		return
 	}
 	if art.Option == asciiArt.Output {
 		err = art.Output()
 		if err != nil {
+			
 			fmt.Println(err)
+			return
 		}
 	} else {
 		fmt.Print(art.Result)

@@ -2,6 +2,7 @@ package asciiArt
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 )
 
@@ -57,6 +58,29 @@ func (art *ArtObjects) DrawAscii() error {
 
 			}
 		}
+	case Align:
+		// var allLines []string
+		var argLines [][]string
+		var lineDatas []string
+		lineTemp := ""
+		var linies [][]string
+		for _, line := range text {
+			argLines = append(argLines, strings.Fields(line))
+		}
+		// fmt.Println(Textlines)
+		for _, line := range argLines {
+			for _, textDatas := range line {
+				for _, letter := range textDatas {
+					lineTemp += art.Fs[mapAscii[letter]]
+					
+				}
+				lineDatas = append(lineDatas, lineTemp)
+				lineTemp = ""
+			}
+			linies = append(linies, lineDatas)
+			lineDatas = nil
+		}
+		fmt.Println(linies)
 	default:
 		for _, line := range lineText {
 			for i := 0; i < 9; i++ {
