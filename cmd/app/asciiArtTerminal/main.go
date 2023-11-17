@@ -21,6 +21,11 @@ func main() {
 		return
 	}
 	if !draw {
+		err = art.ReverseAscii()
+		if err != nil {
+			fmt.Println(err)
+		}
+		return
 	}
 
 	err = art.GetDatas()

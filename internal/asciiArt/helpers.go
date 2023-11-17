@@ -25,7 +25,7 @@ type ArtObjects struct {
 const (
 	Сolour     = "--colour="
 	Output     = "--output="
-	Reverse    = "--reverse"
+	Reverse    = "--reverse="
 	Align      = "--align="
 	Standard   = "standard"
 	Shadow     = "shadow"
@@ -124,7 +124,7 @@ func (art *ArtObjects) GetOption() (error, bool) {
 		art.Args = art.Args[1:]
 	default:
 		if len(art.Args) > 2 {
-			return errors.New(ExpectedArgs), false
+			return errors.New(ExpectedOptions), false
 		}
 	}
 	return nil, true

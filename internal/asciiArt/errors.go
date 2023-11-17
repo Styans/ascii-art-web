@@ -2,6 +2,7 @@ package asciiArt
 
 const (
 	IncorectInput        = "ERROR!: incorect input datas\n"
+	ExpectedOptions      = "Expected options: <--color=> <--align=> <--reverse=> <--output=> "
 	ExpectedArgs         = "Expected: $go run .\\cmd\\app\\asciiArtTerminal\\main.go  <option> <argument> <style>"
 	ExpectedStyle        = "Expected style: standard, shadow, thinkertoy "
 	IncorectColor        = "ERROR!: the color was not found"
