@@ -34,21 +34,29 @@ func (art *ArtObjects) DrawAscii() error {
 	switch art.Option {
 	case Сolour:
 		for _, line := range lineText {
-			for i := 1; i < 9; i++ {
-				for _, letters := range line {
-					art.Result += mapColour[letters] + art.Fs[mapAscii[letters]+i] + Colors["Reset"]
-				}
+			if len(line) <= 1 {
 				art.Result += "\n"
+			} else {
+				for i := 1; i < 9; i++ {
+					for _, letters := range line {
+						art.Result += mapColour[letters] + art.Fs[mapAscii[letters]+i] + Colors["Reset"]
+					}
+					art.Result += "\n"
+				}
 			}
 		}
 	default:
 		for _, line := range lineText {
-			for i := 1; i < 9; i++ {
-				for _, letters := range line {
-					art.Result += art.Fs[mapAscii[letters]+i]
-				}
+			if len(line) <= 1 {
 				art.Result += "\n"
+			} else {
+				for i := 1; i < 9; i++ {
+					for _, letters := range line {
+						art.Result += art.Fs[mapAscii[letters]+i]
+					}
+					art.Result += "\n"
 
+				}
 			}
 		}
 	}

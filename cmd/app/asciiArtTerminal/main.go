@@ -24,6 +24,8 @@ func main() {
 		err = art.ReverseAscii()
 		if err != nil {
 			fmt.Println(err)
+		} else {
+			fmt.Println(art.Result)
 		}
 		return
 	}
@@ -37,6 +39,7 @@ func main() {
 		fmt.Print(asciiArt.IncorectInput, asciiArt.ExpectedArgs)
 		return
 	}
+
 	switch art.Option {
 	case asciiArt.Align:
 		err = art.AlignAscii()
