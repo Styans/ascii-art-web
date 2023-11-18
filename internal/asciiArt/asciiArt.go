@@ -5,9 +5,6 @@ import (
 	"strings"
 )
 
-
-
-
 func (art *ArtObjects) DrawAscii() error {
 	var lineText [][]rune
 	var text []string

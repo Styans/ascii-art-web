@@ -9,43 +9,8 @@ import (
 	"golang.org/x/term"
 )
 
-type ArtObjects struct {
-	Text      string
-	Fonts     string
-	Option    string
-	OptionArg string
-	ColorFill []rune
-	Fs        []string
-	AllFs     []string
-	Args      []string
-	WidthTerm int
-	Result    string
-}
-
-const (
-	Сolour     = "--colour="
-	Output     = "--output="
-	Reverse    = "--reverse="
-	Align      = "--align="
-	Standard   = "standard"
-	Shadow     = "shadow"
-	Thinkertoy = "thinkertoy"
-)
-
-var Colors = map[string]string{
-	"Red":    "\033[31m",
-	"Green":  "\033[32m",
-	"Yellow": "\033[33m",
-	"Blue":   "\033[34m",
-	"Purple": "\033[35m",
-	"Cyan":   "\033[36m",
-	"White":  "\033[37m",
-	"Reset":  "\033[0m",
-	"Orange": "\033[38;5;208m",
-}
-
 func (art *ArtObjects) GetDatas() error {
-	defer art.GetTerminalVids()
+	// defer art.GetTerminalVids()
 
 	var err error
 
@@ -136,10 +101,9 @@ func (art *ArtObjects) GetFs(cut bool, fs string) error {
 	if err != nil {
 		return err
 	}
-	var arr []string
-	fontsAsciiArt := strings.ReplaceAll(string(temp), "\r", string(' '))
-	arr = strings.Split(fontsAsciiArt, string('\n'))
-	art.Fs = arr
+
+	fontsAsciiArt := strings.ReplaceAll(string(temp), "\r", "")
+	art.Fs = strings.Split(fontsAsciiArt, string('\n'))
 	if cut {
 		art.Args = art.Args[:len(art.Args)-1]
 	}
@@ -157,4 +121,13 @@ func (art *ArtObjects) GetTerminalVids() {
 		return
 	}
 	art.WidthTerm = width
+}
+
+func CreateMapAcscii() {
+	mapAscii := make(map[rune]int)
+	j := 0
+	for i := ' '; i <= '~'; i++ {
+		mapAscii[i] = j
+		j += 9
+	}
 }
