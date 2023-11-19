@@ -9,4 +9,6 @@ const (
 	LimitationsFile      = "Info!: This file exists, come up with a new one"
 	LimitationsWidthTerm = "Info!: the width of the terminal is small\n"
 	IncorectAlign        = "ERROR!: you're align was not found\n"
+	IncorectLang         = "ERROR!: you're language was not found"
+	LimitationsConvert   = "The data in the file cannot be converted"
 )

@@ -31,6 +31,7 @@ func main() {
 	}
 
 	err = art.GetDatas()
+
 	switch {
 	case err != nil:
 		fmt.Print(asciiArt.IncorectInput, err)

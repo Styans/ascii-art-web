@@ -14,52 +14,42 @@ func (art *ArtObjects) DrawAscii() error {
 		lineText = append(lineText, []rune(data))
 	}
 
-	mapAscii := make(map[rune]int)
-	j := 0
-	for i := ' '; i <= '~'; i++ {
-		mapAscii[i] = j
-		j += 9
-	}
+	mapAscii := CreateMapAscii()
 
 	mapColour := make(map[rune]string)
-	_, check := Colors[strings.Title(art.OptionArg)]
-
-	if !check && art.Option == Сolour {
-		return errors.New(IncorectColor)
-	} else {
-		for _, letters := range art.ColorFill {
-			mapColour[letters] = Colors[strings.Title(art.OptionArg)]
-		}
-	}
 	switch art.Option {
 	case Сolour:
-		for _, line := range lineText {
-			if len(line) <= 1 {
-				art.Result += "\n"
-			} else {
-				for i := 1; i < 9; i++ {
-					for _, letters := range line {
-						art.Result += mapColour[letters] + art.Fs[mapAscii[letters]+i] + Colors["Reset"]
-					}
-					art.Result += "\n"
-				}
-			}
-		}
-	default:
-		for _, line := range lineText {
-			if len(line) <= 1 {
-				art.Result += "\n"
-			} else {
-				for i := 1; i < 9; i++ {
-					for _, letters := range line {
-						art.Result += art.Fs[mapAscii[letters]+i]
-					}
-					art.Result += "\n"
 
-				}
+		_, check := Colors[strings.Title(art.OptionArg)]
+
+		if !check && art.Option == Сolour {
+			return errors.New(IncorectColor)
+		} else {
+			for _, letters := range art.ColorFill {
+				mapColour[letters] = Colors[strings.Title(art.OptionArg)]
 			}
 		}
+		art.standardAscii(lineText, mapColour, mapAscii)
+	default:
+		Colors["Reset"] = ""
+		art.standardAscii(lineText, mapColour, mapAscii)
 	}
 
 	return nil
+}
+
+func (art *ArtObjects) standardAscii(lineText [][]rune, mapColour map[rune]string, mapAscii map[rune]int) {
+	for _, line := range lineText {
+		if len(line) == 0 {
+			art.Result += "\n"
+		} else {
+			for i := 1; i < 9; i++ {
+				for _, letters := range line {
+					art.Result += mapColour[letters] + art.Fs[mapAscii[letters]+i] + Colors["Reset"]
+				}
+				art.Result += "\n"
+
+			}
+		}
+	}
 }

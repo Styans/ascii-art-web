@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"unicode"
 
 	"golang.org/x/term"
 )
@@ -38,7 +39,20 @@ func (art *ArtObjects) GetDatas() error {
 	if len(art.Args) > 1 {
 		return errors.New(ExpectedArgs)
 	}
+	err = IsEngByLoop(art.Text)
+	if err != nil {
+		return errors.New(IncorectLang)
+	}
 	return nil
+}
+func CreateMapAscii() map[rune]int {
+	mapAscii := make(map[rune]int)
+	j := 0
+	for i := ' '; i <= '~'; i++ {
+		mapAscii[i] = j
+		j += 9
+	}
+	return mapAscii
 }
 
 func (art *ArtObjects) GetOption() (error, bool) {
@@ -125,9 +139,18 @@ func (art *ArtObjects) GetTerminalVids() {
 
 func CreateMapAcscii() {
 	mapAscii := make(map[rune]int)
-	j := 0
+	j := 1
 	for i := ' '; i <= '~'; i++ {
 		mapAscii[i] = j
 		j += 9
 	}
+}
+
+func IsEngByLoop(str string) error {
+	for i := 0; i < len(str); i++ {
+		if str[i] > unicode.MaxASCII {
+			return errors.New(IncorectLang)
+		}
+	}
+	return nil
 }

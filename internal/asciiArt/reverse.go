@@ -43,15 +43,23 @@ func (art *ArtObjects) ReverseAscii() error {
 }
 func FUCK(arr, style []string, mapAscii map[rune]int) (string, error) {
 	text := ""
-	counter := 0
+
 	for j := 0; j < len(arr); j += 8 {
 		if len(arr[j]) == 0 {
-			text += "\n"
+			if j != len(arr)-1 {
+				text += "\n"
+			}
 			j -= 7
-			counter++
+
 			continue
 		}
-
+		counter := 0
+		for i := 0; i < 8; i++ {
+			counter += len(arr[j+i])
+		}
+		if counter/8 != len(arr[j]) {
+			return "", errors.New(LimitationsConvert)
+		}
 		prevLetter := 0
 		for i, el := range arr[j] {
 			var valid bool
@@ -75,20 +83,17 @@ func FUCK(arr, style []string, mapAscii map[rune]int) (string, error) {
 						if as {
 							prevLetter = i + 1
 							text += string(f)
-							counter++
+
 						}
 
 					}
 				}
 			}
 		}
-		text += "\n"
+		if j != len(arr)-1 {
+			text += "\n"
+		}
 
-	}
-	text = text[:len(text)-1]
-	if counter != len(text)-1 {
-
-		return "", errors.New("Asdas")
 	}
 	return text, nil
 }
