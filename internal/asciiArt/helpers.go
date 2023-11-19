@@ -45,19 +45,11 @@ func (art *ArtObjects) GetDatas() error {
 	}
 	return nil
 }
-func CreateMapAscii() map[rune]int {
-	mapAscii := make(map[rune]int)
-	j := 0
-	for i := ' '; i <= '~'; i++ {
-		mapAscii[i] = j
-		j += 9
-	}
-	return mapAscii
-}
 
 func (art *ArtObjects) GetOption() (error, bool) {
 	switch {
 	case strings.HasPrefix(art.Args[0], Align):
+		art.GetTerminalVids()
 		if len(art.Args) > 3 || len(art.Args) < 2 {
 			return errors.New(ExpectedArgs), false
 		}
@@ -137,15 +129,6 @@ func (art *ArtObjects) GetTerminalVids() {
 	art.WidthTerm = width
 }
 
-func CreateMapAcscii() {
-	mapAscii := make(map[rune]int)
-	j := 1
-	for i := ' '; i <= '~'; i++ {
-		mapAscii[i] = j
-		j += 9
-	}
-}
-
 func IsEngByLoop(str string) error {
 	for i := 0; i < len(str); i++ {
 		if str[i] > unicode.MaxASCII {
@@ -153,4 +136,14 @@ func IsEngByLoop(str string) error {
 		}
 	}
 	return nil
+}
+
+func CreateMapAscii() map[rune]int {
+	mapAscii := make(map[rune]int)
+	j := 0
+	for i := ' '; i <= '~'; i++ {
+		mapAscii[i] = j
+		j += 9
+	}
+	return mapAscii
 }
