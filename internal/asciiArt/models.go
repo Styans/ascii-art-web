@@ -22,7 +22,7 @@ type ReverseAscii struct {
 }
 
 const (
-	Сolour     = "--colour="
+	Сolor      = "--color="
 	Output     = "--output="
 	Reverse    = "--reverse="
 	Align      = "--align="

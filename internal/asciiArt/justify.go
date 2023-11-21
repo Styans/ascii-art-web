@@ -2,6 +2,7 @@ package asciiArt
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 )
 
@@ -9,7 +10,7 @@ func (art *ArtObjects) AlignAscii() error {
 	switch art.OptionArg {
 	case "left", "right", "center", "justify":
 	default:
-		return errors.New(IncorectAlign)
+		return errors.New(IncorectAlign + ExpectedAlign)
 	}
 	var text []string
 	var textarr [][]string
@@ -43,13 +44,18 @@ func (art *ArtObjects) AlignAscii() error {
 		lines = append(lines, words)
 		words = nil
 	}
-	lenSpace := 0
 
 	var lines1 string
 	var words1 string
 	letters1 := ""
+	// fmt.Println(len(lines), lines)
 	for j, word := range lines {
+		lenSpace := 0
 		tmp := 0
+		if len(word) == 0 {
+			lines1 += "\n"
+			continue
+		}
 		for _, lenWord := range word {
 			lenSpace += len(lenWord)
 		}
@@ -59,11 +65,12 @@ func (art *ArtObjects) AlignAscii() error {
 				if ix == 0 {
 					switch art.OptionArg {
 					case "center":
-						for s := 0; s < (art.WidthTerm-lenSpace)/2; s++ {
+						for s := 0; s <= ((art.WidthTerm - lenSpace - (len(textarr[j]) * len(art.Fs[mapAscii[' ']+i]))) / 2); s++ {
 							letters1 += " "
 						}
-						if i == 1 {
-							tmp += (art.WidthTerm - lenSpace) / 2
+					case "right":
+						for s := 0; s <= (art.WidthTerm - lenSpace - (len(textarr[j]) * len(art.Fs[mapAscii[' ']+i]))); s++ {
+							letters1 += " "
 						}
 					}
 				}
@@ -87,22 +94,26 @@ func (art *ArtObjects) AlignAscii() error {
 						}
 					}
 				}
-
-				if tmp >= art.WidthTerm {
-					return errors.New(LimitationsWidthTerm)
+				switch art.OptionArg {
+				case "center":
+					fmt.Println(tmp, art.WidthTerm)
+					if len(letters1) >= art.WidthTerm {
+						return errors.New(LimitationsWidthTerm)
+					}
+				default:
+					if tmp >= art.WidthTerm {
+						return errors.New(LimitationsWidthTerm)
+					}
 				}
-
 			}
 
 			words1 += letters1 + "\n"
 			letters1 = ""
 		}
 		lenSpace = 0
-		if j != len(lines)-1 {
-			lines1 += words1 + "\n"
-		} else {
-			lines1 += words1
-		}
+
+		lines1 += words1
+
 		words1 = ""
 	}
 	art.Result = lines1

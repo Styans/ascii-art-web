@@ -10,26 +10,30 @@ import (
 )
 
 func (art *ArtObjects) GetDatas() error {
-	// defer art.GetTerminalVids()
-
 	var err error
-
-	switch art.Args[len(art.Args)-1] {
-	case Standard:
-		err = art.GetFs(true, Standard)
-	case Shadow:
-		err = art.GetFs(true, Shadow)
-	case Thinkertoy:
-		err = art.GetFs(true, Thinkertoy)
-	default:
-		if len(art.Args) < 2 {
-			err = art.GetFs(false, Standard)
-		} else {
-			return errors.New(ExpectedStyle)
+	if len(art.Args) > 1 {
+		switch art.Args[len(art.Args)-1] {
+		case Standard:
+			err = art.GetFs(true, Standard)
+		case Shadow:
+			err = art.GetFs(true, Shadow)
+		case Thinkertoy:
+			err = art.GetFs(true, Thinkertoy)
+		default:
+			if len(art.Args) < 2 {
+				err = art.GetFs(false, Standard)
+			} else {
+				return errors.New(ExpectedStyle)
+			}
 		}
-	}
-	if err != nil {
-		return err
+		if err != nil {
+			return err
+		}
+	} else {
+		err = art.GetFs(false, Standard)
+		if err != nil {
+			return err
+		}
 	}
 
 	art.Text = strings.ReplaceAll(art.Args[len(art.Args)-1], "\\n", string('\n'))
@@ -58,12 +62,12 @@ func (art *ArtObjects) GetOption() (error, bool) {
 		art.OptionArg = strings.TrimPrefix(art.Args[0], Align)
 		art.Option = Align
 		art.Args = art.Args[1:]
-	case strings.HasPrefix(art.Args[0], Сolour):
+	case strings.HasPrefix(art.Args[0], Сolor):
 		if len(art.Args) > 4 || len(art.Args) < 2 {
 			return errors.New(ExpectedArgs), false
 		}
-		art.OptionArg = strings.TrimPrefix(art.Args[0], Сolour)
-		art.Option = Сolour
+		art.OptionArg = strings.TrimPrefix(art.Args[0], Сolor)
+		art.Option = Сolor
 		art.ColorFill = []rune(art.Args[1])
 		switch len(art.Args) {
 		case 4:

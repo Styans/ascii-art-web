@@ -18,7 +18,7 @@ func (art *ArtObjects) DrawAscii() error {
 
 	mapColour := make(map[rune]string)
 	switch art.Option {
-	case Сolour:
+	case Сolor:
 		_, check := Colors[strings.Title(art.OptionArg)]
 		if !check {
 			return errors.New(IncorectColor)

@@ -11,4 +11,5 @@ const (
 	IncorectAlign        = "ERROR!: you're align was not found\n"
 	IncorectLang         = "ERROR!: you're language was not found"
 	LimitationsConvert   = "The data in the file cannot be converted"
+	ExpectedAlign        = "Expected: left, right, center, justify\n"
 )
