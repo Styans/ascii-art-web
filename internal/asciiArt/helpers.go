@@ -42,7 +42,7 @@ func (art *ArtObjects) GetDatas() error {
 	if len(art.Args) > 1 {
 		return errors.New(ExpectedArgs)
 	}
-	err = IsEngByLoop(art.Text)
+	err = art.IsEngByLoop()
 	if err != nil {
 		return errors.New(IncorectLang)
 	}
@@ -123,9 +123,9 @@ func (art *ArtObjects) GetFs(cut bool, fs string) error {
 	return nil
 }
 
-func IsEngByLoop(str string) error {
-	for i := 0; i < len(str); i++ {
-		if str[i] > unicode.MaxASCII {
+func (art *ArtObjects) IsEngByLoop() error {
+	for i := 0; i < len(art.Text); i++ {
+		if art.Text[i] > unicode.MaxASCII {
 			return errors.New(IncorectLang)
 		}
 	}
