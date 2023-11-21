@@ -2,12 +2,11 @@ package asciiArt
 
 import (
 	"errors"
-	"fmt"
 	"os"
+	"os/exec"
+	"strconv"
 	"strings"
 	"unicode"
-
-	"golang.org/x/term"
 )
 
 func (art *ArtObjects) GetDatas() error {
@@ -49,7 +48,10 @@ func (art *ArtObjects) GetDatas() error {
 func (art *ArtObjects) GetOption() (error, bool) {
 	switch {
 	case strings.HasPrefix(art.Args[0], Align):
-		art.GetTerminalVids()
+		err := art.GetTerminalVids()
+		if err != nil {
+			return err, false
+		}
 		if len(art.Args) > 3 || len(art.Args) < 2 {
 			return errors.New(ExpectedArgs), false
 		}
@@ -117,24 +119,27 @@ func (art *ArtObjects) GetFs(cut bool, fs string) error {
 	return nil
 }
 
-func (art *ArtObjects) GetTerminalVids() {
-	fd := int(os.Stdout.Fd())
-
-	// Получаем размеры терминала
-	width, _, err := term.GetSize(fd)
-	if err != nil {
-		fmt.Println("Не удалось получить размеры терминала:", err)
-		return
-	}
-	art.WidthTerm = width
-}
-
 func IsEngByLoop(str string) error {
 	for i := 0; i < len(str); i++ {
 		if str[i] > unicode.MaxASCII {
 			return errors.New(IncorectLang)
 		}
 	}
+	return nil
+}
+
+func (art *ArtObjects) GetTerminalVids() error {
+	cmd := exec.Command("stty", "size")
+	cmd.Stdin = os.Stdin
+	output, err := cmd.Output()
+	if err != nil {
+		return err
+	}
+	width, err := strconv.Atoi(strings.Fields(string(output))[1])
+	if err != nil {
+		return err
+	}
+	art.WidthTerm = width
 	return nil
 }
 

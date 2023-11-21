@@ -19,22 +19,18 @@ func (art *ArtObjects) DrawAscii() error {
 	mapColour := make(map[rune]string)
 	switch art.Option {
 	case Сolour:
-
 		_, check := Colors[strings.Title(art.OptionArg)]
-
-		if !check && art.Option == Сolour {
+		if !check {
 			return errors.New(IncorectColor)
 		} else {
 			for _, letters := range art.ColorFill {
 				mapColour[letters] = Colors[strings.Title(art.OptionArg)]
 			}
 		}
-		art.standardAscii(lineText, mapColour, mapAscii)
 	default:
 		Colors["Reset"] = ""
-		art.standardAscii(lineText, mapColour, mapAscii)
 	}
-
+	art.standardAscii(lineText, mapColour, mapAscii)
 	return nil
 }
 

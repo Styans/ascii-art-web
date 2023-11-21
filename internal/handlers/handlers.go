@@ -25,7 +25,7 @@ func (app *Aplication) mainPage(w http.ResponseWriter, r *http.Request) {
 		i := r.FormValue("")
 		i = i
 		r.Method = http.MethodPost
-		tmlp := template.Must(template.ParseFiles("./internal/web/html/index.html"))
+		tmlp := template.Must(template.ParseFiles("./pkg/web/html/index.html"))
 		err := tmlp.ExecuteTemplate(w, "index", nil)
 		if err != nil {
 			app.errors(w, http.StatusNotFound)

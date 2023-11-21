@@ -12,19 +12,22 @@ func (art *ArtObjects) AlignAscii() error {
 		return errors.New(IncorectAlign)
 	}
 	var text []string
+	var textarr [][]string
+
 	art.Text = strings.ReplaceAll(art.Text, "\\n", "\n")
 	text = strings.Split(art.Text, "\n")
-	var textarr [][]string
+
 	for _, tmp := range text {
 		textarr = append(textarr, strings.Fields(tmp))
 	}
 
-	mapAscii := make(map[rune]int)
-	j := 0
-	for i := ' '; i <= '~'; i++ {
-		mapAscii[i] = j
-		j += 9
-	}
+	// mapAscii := make(map[rune]int)
+	mapAscii := CreateMapAscii()
+	// j := 0
+	// for i := ' '; i <= '~'; i++ {
+	// 	mapAscii[i] = j
+	// 	j += 9
+	// }
 
 	var lines [][]string
 	var words []string

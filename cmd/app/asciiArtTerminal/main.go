@@ -20,6 +20,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+
 	if !draw {
 		err = art.ReverseAscii()
 		if err != nil {
@@ -44,22 +45,21 @@ func main() {
 	switch art.Option {
 	case asciiArt.Align:
 		err = art.AlignAscii()
+	case asciiArt.Output:
+		err = art.DrawAscii()
+		if err != nil {
+			fmt.Print(asciiArt.IncorectInput, err)
+			return
+		}
+		err = art.Output()
 	default:
 		err = art.DrawAscii()
 	}
 	if err != nil {
-
 		fmt.Print(asciiArt.IncorectInput, err)
 		return
-	}
-	if art.Option == asciiArt.Output {
-		err = art.Output()
-		if err != nil {
-
-			fmt.Println(err)
-			return
-		}
 	} else {
 		fmt.Print(art.Result)
 	}
+
 }
