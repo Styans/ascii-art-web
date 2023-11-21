@@ -6,7 +6,7 @@ The output should manipulate colors using the flag --color=\<color> \<letters to
 - If the letter is not specified, the whole `string` should be colored.
 - The flag must have exactly the same format as above, any other formats must return the following usage message:
 ```
-Usage: go run . [OPTION] [STRING]
+Usage: go run ./cmd/app/asciiArtTerminal/main.go [OPTION] [STRING]
 
-EX: go run . --color=<color> <letters to be colored> "something"
+EX: go run ./cmd/app/asciiArtTerminal/main.go --color=<color> <letters to be colored> "something"
 ```
