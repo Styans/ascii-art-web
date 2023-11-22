@@ -9,11 +9,13 @@ import (
 
 type Aplication struct {
 	Ascii asciiArt.ArtObjects
+	Valid bool
 }
 
 func (app *Aplication) Route() *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", app.mainPage)
+	mux.HandleFunc("/download", app.download)
 	style := http.FileServer(http.Dir("./pkg/web/ui/"))
 	mux.Handle("/static/", http.StripPrefix("/static", style))
 	return mux

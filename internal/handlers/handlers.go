@@ -6,11 +6,6 @@ import (
 	"net/http"
 )
 
-type formDatas struct {
-	input string
-	fs    string
-}
-
 func (app *Aplication) mainPage(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	app.Ascii.Result = ""
@@ -18,15 +13,10 @@ func (app *Aplication) mainPage(w http.ResponseWriter, r *http.Request) {
 		app.errors(w, http.StatusNotFound)
 		return
 	}
-	if r.URL.Query().Get("text") {
-		text := r.FormValue("text")
-		w.Header().Set("Content-Disposition", "attachment; filename=file.txt")
-		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte(text))
-	}
-	if r.Method == http.MethodPost {
+	app.Ascii.Text = r.FormValue("text")
+	if r.Method == http.MethodPost && len(app.Ascii.Text) > 0 {
+
 		r.ParseForm()
-		app.Ascii.Text = r.FormValue("text")
 		if err := app.Ascii.IsEngByLoop(); err != nil {
 			app.errors(w, http.StatusBadRequest)
 			return
@@ -38,16 +28,16 @@ func (app *Aplication) mainPage(w http.ResponseWriter, r *http.Request) {
 			app.errors(w, http.StatusBadGateway)
 			return
 		}
+		app.Valid = true
 
 		tmpl, err := template.ParseFiles("./pkg/web/html/index.html")
 		if err != nil {
 			app.errors(w, http.StatusInternalServerError)
 			return
 		}
-
-		err = tmpl.Execute(w, app.Ascii.Result)
+		// r.URL.Query()
+		err = tmpl.Execute(w, app)
 		if err != nil {
-			fmt.Println("asd")
 			app.errors(w, http.StatusNotFound)
 		}
 	} else {
@@ -59,7 +49,7 @@ func (app *Aplication) mainPage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = tmpl.Execute(w, app.Ascii.Result)
+		err = tmpl.Execute(w, app)
 		if err != nil {
 			fmt.Println("assd")
 
@@ -67,4 +57,16 @@ func (app *Aplication) mainPage(w http.ResponseWriter, r *http.Request) {
 		}
 
 	}
+}
+
+func (app *Aplication) download(w http.ResponseWriter, r *http.Request) {
+	text := r.FormValue("text")
+	if len(text) <= 1 {
+		app.errors(w, http.StatusInternalServerError)
+		return
+	}
+	fmt.Println(text, len(text))
+	w.Header().Set("Content-Disposition", "attachment; filename=file.txt")
+	w.Header().Set("Content-Type", "text/plain")
+	w.Write([]byte(text))
 }

@@ -30,9 +30,11 @@
             <div class="result">
                 <h2>The Result:</h2>
                 <div class="lenovo">
-                    <pre class="auto-resize">{{ . }}</pre>
+                    <pre class="auto-resize">{{ .Ascii.Result }}</pre>
                 </div>
-                <a class="auto-resize" href="/?text={{ urlquery . }}" download="file.txt">Download</a>
+                {{if .Valid}}
+                <a class="auto-resize" href="/download?text={{ urlquery .Ascii.Result }}" download="file.txt">Download</a>
+                {{end}}
             </div>
         </div>
         
