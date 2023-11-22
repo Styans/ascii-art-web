@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -17,14 +16,22 @@ func (app *Aplication) mainPage(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost && len(app.Ascii.Text) > 0 {
 
 		r.ParseForm()
+		if err := r.ParseForm(); err != nil {
+			app.errors(w, http.StatusBadRequest)
+			return
+		}
 		if err := app.Ascii.IsEngByLoop(); err != nil {
+			app.errors(w, http.StatusBadGateway)
+			return
+		}
+
+		err := app.Ascii.GetFs(false, r.FormValue("transformationOption"))
+		if err != nil {
 			app.errors(w, http.StatusBadRequest)
 			return
 		}
 
-		app.Ascii.GetFs(false, r.FormValue("transformationOption"))
-		err := app.Ascii.DrawAscii()
-		if err != nil {
+		if err = app.Ascii.DrawAscii(); err != nil {
 			app.errors(w, http.StatusBadGateway)
 			return
 		}
@@ -36,9 +43,9 @@ func (app *Aplication) mainPage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		// r.URL.Query()
-		err = tmpl.Execute(w, app)
-		if err != nil {
-			app.errors(w, http.StatusNotFound)
+
+		if err = tmpl.Execute(w, app); err != nil {
+			app.errors(w, http.StatusInternalServerError)
 		}
 	} else {
 
@@ -49,11 +56,9 @@ func (app *Aplication) mainPage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = tmpl.Execute(w, app)
-		if err != nil {
-			fmt.Println("assd")
-
-			app.errors(w, http.StatusNotFound)
+		if err = tmpl.Execute(w, app); err != nil {
+			app.errors(w, http.StatusInternalServerError)
+			return
 		}
 
 	}
@@ -65,8 +70,11 @@ func (app *Aplication) download(w http.ResponseWriter, r *http.Request) {
 		app.errors(w, http.StatusInternalServerError)
 		return
 	}
-	fmt.Println(text, len(text))
 	w.Header().Set("Content-Disposition", "attachment; filename=file.txt")
 	w.Header().Set("Content-Type", "text/plain")
-	w.Write([]byte(text))
+	_, err := w.Write([]byte(text))
+	if err != nil {
+		app.errors(w, http.StatusInternalServerError)
+		return
+	}
 }
