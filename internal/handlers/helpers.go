@@ -15,6 +15,7 @@ type Aplication struct {
 func (app *Aplication) Route() *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", app.mainPage)
+	mux.HandleFunc("/ascii-art", app.asciiArt)
 	mux.HandleFunc("/download", app.download)
 	style := http.FileServer(http.Dir("./pkg/web/ui/"))
 	mux.Handle("/static/", http.StripPrefix("/static", style))

@@ -41,6 +41,7 @@ func (art *ArtObjects) ReverseAscii() error {
 
 	return err
 }
+
 func FUCK(arr, style []string, mapAscii map[rune]int) (string, error) {
 	text := ""
 
