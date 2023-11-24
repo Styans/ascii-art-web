@@ -23,17 +23,17 @@ func (art *ArtObjects) ReverseAscii() error {
 		mapAscii[i] = j
 		j += 9
 	}
-	text, err := FUCK(arr, art.Reverse.Standard, mapAscii)
+	text, err := reverseToText(arr, art.Reverse.Standard, mapAscii)
 	if err == nil {
 		art.Result = text[:len(text)-1]
 		return nil
 	}
-	text, err = FUCK(arr, art.Reverse.Shadow, mapAscii)
+	text, err = reverseToText(arr, art.Reverse.Shadow, mapAscii)
 	if err == nil {
 		art.Result = text[:len(text)-1]
 		return nil
 	}
-	text, err = FUCK(arr, art.Reverse.Thinkertoy, mapAscii)
+	text, err = reverseToText(arr, art.Reverse.Thinkertoy, mapAscii)
 	if err == nil {
 		art.Result = text[:len(text)-1]
 		return nil
@@ -42,7 +42,7 @@ func (art *ArtObjects) ReverseAscii() error {
 	return err
 }
 
-func FUCK(arr, style []string, mapAscii map[rune]int) (string, error) {
+func reverseToText(arr, style []string, mapAscii map[rune]int) (string, error) {
 	text := ""
 
 	for j := 0; j < len(arr); j += 8 {
