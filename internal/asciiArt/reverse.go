@@ -54,6 +54,9 @@ func FUCK(arr, style []string, mapAscii map[rune]int) (string, error) {
 
 			continue
 		}
+		if j+7 >= len(arr[j:])-1 {
+			return "", errors.New(LimitationsConvert)
+		}
 		counter := 0
 		for i := 0; i < 8; i++ {
 			counter += len(arr[j+i])
@@ -96,6 +99,7 @@ func FUCK(arr, style []string, mapAscii map[rune]int) (string, error) {
 		}
 
 	}
+
 	return text, nil
 }
 
